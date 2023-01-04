@@ -1,24 +1,24 @@
 ---
 layout: post
-title:  "How to enable SSH authentication in Multipass VMs"
+title:  "How to launch Multipass VMs configured with SSH authentication"
 subtitle: > 
-  Multipass is your friend for quickly spinning up VMs in Linux, Mac, or Windows. You can easily launch a VM configured with SSH kay-based authentication in Multipass"
-date:   2022-12-28 11:00:00 +0530
+  Using cloud-init to configure SSH key-based authentication in Multipass VMs.
+date:   2023-01-05 04:00:00 +0530
 categories: [recipe]
 tags: [linux]
 ---
 
+Multipass is your friend for quickly spinning up virtual machines in Linux, Mac, or Windows.
+Just install Multipass and run `multipass launch --name my-vm` to create a VM with the latest Ubuntu LTS release. 
 
- Just install and run `multipass launch --name my-vm` and you are done. 
+SSH authentication is disabled in this. You must access it with `multipass shell my-vm` and then configure SSH authentication.
 
-This VM has 1 CPU core, 1GB memory, and 5GB storage.
-Most importantly it does not have SSH enabled and you have to use `multipass shell` to access it and then configure SSH access.
-
-That's too much work. So, let's use cloud-init to launch a VM with SSH keys.
+That's too much work. So, let's use [cloud-init] to cofigure key-based authentication at the VM launch.
 
 ### Create the SSH keys
 
-Use `ssh-keygen` to create a new key pair.
+Create a new key pair in the host machine where [Multipass] is running .
+
 ```shell
 $ ssh-keygen -f .ssh/multipass_vm_key
 ```
@@ -30,9 +30,9 @@ $ cat .ssh/multipass_vm_key.pub
 Then, copy the output to clipboard.
 
 
-### Create the config file for cloud-init
+### Create the user data file for cloud-init
 
-Create a new file `vm-config.yml`.
+Create a new file `vm_config.yml`.
 
 ```yaml
 #cloud-config
@@ -43,18 +43,18 @@ users:
 ```
 Replace the line beginning wth `ssh-rsa` with the content copied to clipboard in the previous step.
 
-### Launch VM with 
+### Launch VM
 
+Use the created yml file and launch a VM.
 
 ```shell
-$ multipass launch file:///home/dialog/focal-server-cloudimg-amd64-disk-kvm.img --cloud-init ubuntu_vm_2.yml -n my-vm
+$ multipass launch --cloud-init vm_config.yml -n my-vm
 ```
 
 Check the IP address
 ```shell
 $ multipass list                          
 Name                    State             IPv4             Image
-k8s-1                   Running           10.221.207.122   Not Available
 my-vm                   Running           10.221.207.193   Not Available
 ```
 
@@ -62,8 +62,13 @@ Login to the new VM with SSH.
 
 
 ```shell
-$ ssh -i .ssh/m_vm_key ubuntu@10.221.207.193
+$ ssh -i .ssh/multipass_vm_key ubuntu@10.221.207.193
 ```
 
+[cloud-init] is not limited to enabling SSH. It supports doing a variety of configurations at the initialization or boot-time of in cloud-based vitual machines.
+
+[Read the docs] to check out more features.
 
 [Multipass]: https://multipass.run/
+[cloud-init]: https://cloud-init.io/
+[Read the docs]: https://cloudinit.readthedocs.io/en/latest/
