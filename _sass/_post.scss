@@ -129,6 +129,20 @@ pre.highlight{
   margin-bottom: 1rem;
 }
 
+.alert-highlight{
+  font-family: 'Raleway', sans-serif;
+  color: #da0c0c;
+  font-size: 1rem;
+  // border-left: 1px solid #be0f49b3;
+  // padding: .5rem 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  .alert-text{
+    padding-left: 1rem;
+  }
+}
+
 .tag-link{
   font-family: 'Raleway', sans-serif;
   color: #546e7a;
@@ -148,4 +162,10 @@ pre.highlight{
 li{
   font-family: 'Titillium Web', sans-serif;
   font-size: 1.1rem;
+}
+
+code.language-plaintext{
+  color: #002638;
+  font-style: italic;
+  font-size: .95rem;
 }
