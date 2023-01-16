@@ -1,4 +1,4 @@
-multipass launch --cpus 8 --mem 16384M --disk 25G file:///home/dialog/focal-server-cloudimg-amd64-disk-kvm.img --cloud-init k8s_vm.yml -n k8s-10
+multipass launch --cpus 8 --mem 16384M --disk 25G file:///home/dialog/focal-server-cloudimg-amd64-disk-kvm.img --cloud-init k8s_vm.yml -n k8s-11
 
 
 

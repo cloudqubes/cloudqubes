@@ -67,6 +67,11 @@ $ sudo systemctl list-units --type=service | grep micro
 
 These services must be able to communicate via HTTP APIs on their destined ports for MicroK8s to work. If `no_proxy` is not set, those API calls would also be sent to the proxy server and will get failed. Therefore, MicroK8s would not be set up correctly if `no_proxy` is not configured.
 
+## #3: Install MicroK8s
+
+Follow the MicroK8s installation [instructions].
+Good Luck!
 
 [snap]: https://snapcraft.io/microk8s
 [MicroK8s]: https://microk8s.io
+[instructions]: https://microk8s.io/docs/getting-started
